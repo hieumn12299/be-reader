@@ -1,0 +1,8 @@
+{
+  "created": "Tạo truyện thành công",
+  "updated": "Cập nhật truyện thành công",
+  "deleted": "Xoá truyện thành công",
+  "not_found": "Không tìm thấy truyện",
+  "list_success": "Lấy danh sách truyện thành công",
+  "not_author": "Bạn không phải là tác giả của truyện này"
+}

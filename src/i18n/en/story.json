@@ -1,0 +1,8 @@
+{
+  "created": "Story created successfully",
+  "updated": "Story updated successfully",
+  "deleted": "Story deleted successfully",
+  "not_found": "Story not found",
+  "list_success": "Stories retrieved successfully",
+  "not_author": "You are not the author of this story"
+}

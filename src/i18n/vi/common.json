@@ -1,0 +1,15 @@
+{
+  "success": "Thành công",
+  "error": {
+    "internal": "Lỗi hệ thống, vui lòng thử lại sau",
+    "not_found": "Không tìm thấy {entity}",
+    "unauthorized": "Vui lòng đăng nhập",
+    "forbidden": "Bạn không có quyền thực hiện hành động này"
+  },
+  "validation": {
+    "required": "{field} không được để trống",
+    "invalid_email": "Email không hợp lệ",
+    "min_length": "{field} phải có ít nhất {min} ký tự",
+    "max_length": "{field} không được quá {max} ký tự"
+  }
+}

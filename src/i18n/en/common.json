@@ -1,0 +1,15 @@
+{
+  "success": "Success",
+  "error": {
+    "internal": "Internal server error, please try again later",
+    "not_found": "{entity} not found",
+    "unauthorized": "Please log in",
+    "forbidden": "You do not have permission to perform this action"
+  },
+  "validation": {
+    "required": "{field} is required",
+    "invalid_email": "Invalid email address",
+    "min_length": "{field} must be at least {min} characters",
+    "max_length": "{field} must not exceed {max} characters"
+  }
+}
