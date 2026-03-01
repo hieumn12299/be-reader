@@ -27,7 +27,7 @@ import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
     I18nModule.forRoot({
       fallbackLanguage: 'vi',
       loaderOptions: {
-        path: path.join(__dirname, '/i18n/'),
+        path: path.join(__dirname, '..', 'i18n'),
         watch: true,
       },
       resolvers: [
