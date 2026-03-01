@@ -1,3 +1,4 @@
 [submodule ".document"]
 	path = .document
 	url = git@github.com:hieumn12299/reader-docs.git
+	branch = main
