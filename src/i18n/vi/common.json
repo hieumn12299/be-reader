@@ -7,9 +7,18 @@
     "forbidden": "Bạn không có quyền thực hiện hành động này"
   },
   "validation": {
+    "invalid_data": "Dữ liệu không hợp lệ",
+    "validation_failed": "Dữ liệu xác thực thất bại",
+    "invalid_value": "Giá trị không hợp lệ",
     "required": "{field} không được để trống",
     "invalid_email": "Email không hợp lệ",
     "min_length": "{field} phải có ít nhất {min} ký tự",
-    "max_length": "{field} không được quá {max} ký tự"
+    "max_length": "{field} không được quá {max} ký tự",
+    "password_strength": "Mật khẩu phải có ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt",
+    "password_min": "Mật khẩu phải có ít nhất {min} ký tự",
+    "password_max": "Mật khẩu không được quá {max} ký tự",
+    "email_required": "Email không được để trống",
+    "display_name_min": "Tên hiển thị phải có ít nhất {min} ký tự",
+    "display_name_max": "Tên hiển thị không được quá {max} ký tự"
   }
 }

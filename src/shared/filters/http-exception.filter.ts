@@ -7,6 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { I18nService } from 'nestjs-i18n';
 
 interface ErrorResponse {
   statusCode: number;
@@ -19,6 +20,8 @@ interface ErrorResponse {
 export class HttpExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(HttpExceptionFilter.name);
 
+  constructor(private readonly i18n: I18nService) {}
+
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -29,35 +32,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
       const status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
 
-      // Handle validation errors from class-validator
       if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
         const responseObj = exceptionResponse as Record<string, unknown>;
 
-        // class-validator sends message as array
-        if (Array.isArray(responseObj.message)) {
-          const details: Record<string, string[]> = {};
-          for (const msg of responseObj.message) {
-            if (typeof msg === 'string') {
-              // Try to extract field name from validation message
-              const field = msg.split(' ')[0] || 'general';
-              if (!details[field]) details[field] = [];
-              details[field].push(msg);
-            }
-          }
-
-          errorResponse = {
-            statusCode: status,
-            message: 'Dữ liệu không hợp lệ',
-            error: (responseObj.error as string) || 'Bad Request',
-            details,
-          };
-        } else {
-          errorResponse = {
-            statusCode: status,
-            message: (responseObj.message as string) || exception.message,
-            error: (responseObj.error as string) || 'Error',
-          };
-        }
+        errorResponse = {
+          statusCode: status,
+          message: (responseObj.message as string) || exception.message,
+          error: (responseObj.error as string) || 'Error',
+          ...(responseObj.details
+            ? { details: responseObj.details as Record<string, string[]> }
+            : {}),
+        };
       } else {
         errorResponse = {
           statusCode: status,
@@ -66,7 +51,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         };
       }
     } else {
-      // Unknown/unexpected errors
       this.logger.error(
         'Unexpected error',
         exception instanceof Error ? exception.stack : String(exception),
@@ -74,7 +58,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
       errorResponse = {
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: 'Lỗi hệ thống, vui lòng thử lại sau',
+        message: this.i18n.t('common.error.internal'),
         error: 'Internal Server Error',
       };
     }

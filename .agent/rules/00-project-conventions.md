@@ -79,3 +79,69 @@ Khi sửa shared docs → nhớ commit cả submodule.
 
 ESLint rule `@typescript-eslint/no-explicit-any` đã set thành `"error"`.
 **TUYỆT ĐỐI KHÔNG** viết `any` trong code. Dùng `unknown` + type narrowing nếu cần.
+
+## 6. i18n — KHÔNG hardcode ngôn ngữ
+
+```typescript
+// ✅ ĐÚNG — dùng I18nService
+throw new ForbiddenException(this.i18n.t('common.error.forbidden'));
+
+// ❌ SAI — hardcode tiếng Việt
+throw new ForbiddenException('Bạn không có quyền thực hiện hành động này');
+```
+
+- File i18n: `src/i18n/{vi,en}/*.json`
+- Mặc định: `vi`, header `x-lang: en` cho tiếng Anh
+- Trong service: `this.i18n.t('module.key')`
+
+## 7. Post-Task Checklist (BẮT BUỘC)
+
+Sau khi hoàn thành task, PHẢI chạy và đảm bảo pass:
+
+```bash
+pnpm lint          # 0 errors
+pnpm typecheck     # 0 errors
+pnpm build         # exit code 0
+```
+
+**KHÔNG CHẤP NHẬN** bàn giao task khi còn lỗi.
+
+## 8. NestJS Patterns
+
+### Import Type cho Decorated Signatures
+
+```typescript
+// ✅ ĐÚNG — tách import type
+import { CurrentUser } from '../../shared/decorators/current-user.decorator';
+import type { JwtPayload } from '../../shared/decorators/current-user.decorator';
+
+// ❌ SAI — combined import gây TS1272
+import { CurrentUser, JwtPayload } from '../../shared/decorators/current-user.decorator';
+```
+
+### Typed Express Objects
+
+```typescript
+// ✅ ĐÚNG
+const request = context.switchToHttp().getRequest<Request>();
+
+// ❌ SAI — trả về any
+const request = context.switchToHttp().getRequest();
+```
+
+## 9. Prisma Conventions
+
+- Schema: `prisma/schema.prisma`, Config: `prisma.config.ts`
+- Sau khi thay đổi schema → PHẢI chạy `pnpm exec prisma generate` + `pnpm run build`
+
+## 10. Walkthrough sau mỗi task
+
+- Sau khi hoàn thành task, tạo walkthrough hiển thị **tất cả code changes** (dùng `render_diffs`)
+- Walkthrough phải bao gồm: files đã thay đổi, lý do, và kết quả kiểm tra
+
+## 11. Lên kế hoạch BẮT BUỘC trước mọi task
+
+- **MỌI task** (feature, fix, chore) đều PHẢI có `implementation_plan.md` trước khi code
+- Plan phải gửi user review và được approve trước khi implement
+- Dùng workflow tương ứng: `/feature`, `/fix`, `/chore`
+- Xem chi tiết: `.agent/workflows/feature.md`, `fix.md`, `chore.md`

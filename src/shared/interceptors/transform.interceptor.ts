@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
 import { Response } from 'express';
+import { I18nService } from 'nestjs-i18n';
 
 export interface ApiResponse<T> {
   statusCode: number;
@@ -24,6 +25,8 @@ export class TransformInterceptor<T> implements NestInterceptor<
   T,
   ApiResponse<T>
 > {
+  constructor(private readonly i18n: I18nService) {}
+
   intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -53,7 +56,7 @@ export class TransformInterceptor<T> implements NestInterceptor<
           const res = responseData as Record<string, unknown>;
           return {
             statusCode,
-            message: (res.message as string) || 'Success',
+            message: (res.message as string) || this.i18n.t('common.success'),
             data: res.data as T,
             meta: res.meta as ApiResponse<T>['meta'],
           };
@@ -61,7 +64,7 @@ export class TransformInterceptor<T> implements NestInterceptor<
 
         return {
           statusCode,
-          message: 'Success',
+          message: this.i18n.t('common.success'),
           data: responseData as T,
         };
       }),

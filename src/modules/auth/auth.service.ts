@@ -51,16 +51,13 @@ export class AuthService {
     );
 
     return {
-      message: this.i18n.t('auth.register_success'),
-      data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          displayName: user.displayName,
-          role: user.role,
-        },
-        ...tokens,
+      user: {
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName,
+        role: user.role,
       },
+      ...tokens,
     };
   }
 
@@ -92,17 +89,14 @@ export class AuthService {
     );
 
     return {
-      message: this.i18n.t('auth.login_success'),
-      data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          displayName: user.displayName,
-          role: user.role,
-          avatarUrl: user.avatarUrl,
-        },
-        ...tokens,
+      user: {
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName,
+        role: user.role,
+        avatarUrl: user.avatarUrl,
       },
+      ...tokens,
     };
   }
 
@@ -128,10 +122,7 @@ export class AuthService {
         user.displayName,
       );
 
-      return {
-        message: this.i18n.t('auth.refresh_success'),
-        data: tokens,
-      };
+      return tokens;
     } catch {
       throw new UnauthorizedException(this.i18n.t('auth.token_expired'));
     }
@@ -162,7 +153,7 @@ export class AuthService {
       throw new UnauthorizedException(this.i18n.t('auth.token_invalid'));
     }
 
-    return { data: user };
+    return user;
   }
 
   private async generateTokens(

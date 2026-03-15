@@ -8,11 +8,15 @@ import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
 import { Request } from 'express';
 import { ROLES_KEY } from '../decorators/roles.decorator';
-import { JwtPayload } from '../decorators/current-user.decorator';
+import type { JwtPayload } from '../decorators/current-user.decorator';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    private readonly i18n: I18nService,
+  ) {}
 
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
@@ -29,17 +33,18 @@ export class RolesGuard implements CanActivate {
 
     if (!user) {
       throw new ForbiddenException(
-        'Bạn không có quyền thực hiện hành động này',
+        this.i18n.t('common.error.forbidden'),
       );
     }
 
     const hasRole = requiredRoles.some((role) => user.role === role);
     if (!hasRole) {
       throw new ForbiddenException(
-        'Bạn không có quyền thực hiện hành động này',
+        this.i18n.t('common.error.forbidden'),
       );
     }
 
     return true;
   }
 }
+

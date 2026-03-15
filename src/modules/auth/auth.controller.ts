@@ -48,4 +48,15 @@ export class AuthController {
   async getMe(@CurrentUser() user: JwtPayload) {
     return this.authService.getMe(user.sub);
   }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Logout current user' })
+  async logout() {
+    // Token invalidation can be added here (e.g., blacklist)
+    // For now, FE handles clearing tokens from storage
+    return { message: 'Logged out successfully' };
+  }
 }

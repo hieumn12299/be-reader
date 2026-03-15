@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import * as path from 'path';
 import {
   I18nModule,
@@ -14,6 +14,7 @@ import { StoryModule } from './modules/story/story.module';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import { TransformInterceptor } from './shared/interceptors/transform.interceptor';
 import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
+import { I18nValidationPipe } from './shared/pipes/i18n-validation.pipe';
 
 @Module({
   imports: [
@@ -44,6 +45,11 @@ import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
     StoryModule,
   ],
   providers: [
+    // Global validation pipe (with i18n)
+    {
+      provide: APP_PIPE,
+      useClass: I18nValidationPipe,
+    },
     // Global exception filter
     {
       provide: APP_FILTER,
